@@ -1,0 +1,55 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"
+
+export default function Home() {
+  const [userName, setUserName] = useState<string>("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log(userName);
+    if(!userName) return;
+
+    localStorage.setItem("authUser", JSON.stringify({name: userName}));
+    navigate("/clientes");
+  };
+
+  return (
+    <>
+      <div className="flex h-dvh flex-col justify-center px-6 py-12 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <h2 className="mt-10 text-center text-2xl/9 font-semi-bold tracking-tight text-gray-900">
+            Olá, seja bem-vindo!
+          </h2>
+        </div>
+
+        <div className="mt-2 sm:mx-auto sm:w-full sm:max-w-sm">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="mt-2 mb-4">
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Digite o nome:"
+                required
+                autoComplete="text"
+                className="block w-full rounded-md bg-white px-3 py-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                value={userName || ''}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+              </div>
+            <div>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-orange-500 px-3 py-3 text-sm/6 font-semibold text-white shadow-xs hover:bg-orange-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
+              >
+                Entrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </>
+  )
+}
