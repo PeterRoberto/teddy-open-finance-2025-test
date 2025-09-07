@@ -1,20 +1,21 @@
 import { api, requestConfig } from "../utils/config";
 
 // Interface
-import type { User } from "../types/user";
+// import type { User } from "../types/user";
+import type { UsersResponse } from "../types/user";
 
-console.log(`${api}/users`);
 
 // Get users
-export const getUsers = async (): Promise<User[]> => {
+export const getUsers = async (): Promise<UsersResponse> => {
     const config = requestConfig("GET");
-    const res = await fetch(`${api}/users`, config);
 
+    const res = await fetch(`${api}/users`, config);
     if (!res.ok) {
-        throw new Error("Erro ao buscar usuários");
+    throw new Error("Erro ao buscar usuários");
     }
 
-    return res.json() as Promise<User[]>;
+    const data: UsersResponse = await res.json();
+    return data;
 };
 
 

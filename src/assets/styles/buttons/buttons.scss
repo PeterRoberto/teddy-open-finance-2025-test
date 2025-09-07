@@ -1,0 +1,12 @@
+@use '../variables.scss' as variables;
+
+
+// Type 1 (Clientes)
+.button-create-clients {
+    transition: variables.$transition;  
+    &:hover {
+        background-color: variables.$active-item-menu;
+        transition: variables.$transition; // transição suave
+        color: white;
+    }
+}

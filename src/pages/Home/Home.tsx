@@ -1,7 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../../context/userContext";
 
 export default function Home() {
+  const { setName} = useAuth();
+
   const [userName, setUserName] = useState<string>("");
   const navigate = useNavigate();
 
@@ -10,8 +14,8 @@ export default function Home() {
 
     console.log(userName);
     if(!userName) return;
-
-    localStorage.setItem("authUser", JSON.stringify({name: userName}));
+    
+    setName(userName || null);
     navigate("/clientes");
   };
 

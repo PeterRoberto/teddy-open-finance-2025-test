@@ -4,3 +4,7 @@ export interface User {
   salary: number;
   companyValuation: number;
 }
+
+export interface UsersResponse {
+  clients: User[];
+}
