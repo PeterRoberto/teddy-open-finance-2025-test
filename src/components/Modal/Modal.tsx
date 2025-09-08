@@ -74,10 +74,11 @@ export default function Example({ open, setOpen, action, onClose, selectedId }: 
         // Resetar estados, mensagens e fechar modal
         setTimeout(function() {
           setMessage(null);
+          onClose();
         }, 2000);
+        
       }
 
-      // onClose();
     } catch (err) {
       console.error(err);
       alert("Ocorreu um erro. Verifique os dados e tente novamente.");

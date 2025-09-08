@@ -4,22 +4,22 @@ export default function Example() {
   return (
     <>
     <div className="flex items-center justify-between px-4 py-3 sm:px-6">
-      <div className="flex flex-1 justify-between sm:hidden">
+      <div className="flex w-full justify-center sm:hidden">
         <a
           href="#"
-          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="min-w-25 relative flex justify-center items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
         </a>
         <a
           href="#"
-          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="min-w-25 relative ml-3 flex justify-center items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
         </a>
       </div>
       <div className="flex flex-1 items-center justify-center">
-        <nav aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md">
+        <nav aria-label="Pagination" className="isolate  -space-x-px rounded-md hidden sm:block">
             <a
               href="#"
               className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400  hover:bg-gray-50 focus:z-20 focus:outline-offset-0"

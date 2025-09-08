@@ -1,6 +1,3 @@
-import { PencilIcon, TrashIcon   } from '@heroicons/react/24/outline';
-import { PlusIcon } from '@heroicons/react/24/solid';
-
 // Styles
 import "../../assets/styles/buttons/buttons.scss";
 
@@ -11,6 +8,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Header/Header";
 import Modal from "../../components/Modal/Modal";
 import Pagination from "../../components/Navigation/Pagination";
+import ClientCard from '../../components/Clients/ClientCard';
 
 // Interfaces
 import type { UsersResponse } from "../../types/user";
@@ -27,12 +25,37 @@ const Clients = () => {
   const [open, setOpen] = useState(true);
   const [isAction, setIsAction] = useState<ActionType>("create");
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedClients, setSelectedClients] = useState<number[]>([]);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [clientsPerPage] = useState(16);
 
   useEffect(() => {
     setOpen(false);
   }, []);
+
+
+  // Carregar selecionados do localStorage ao montar
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedClients");
+    if (stored) {
+      setSelectedClients(JSON.parse(stored));
+    }
+  }, []);
+
+  const toggleSelectClient = (id: number) => {
+    let updated: number[];
+    if (selectedClients.includes(id)) {
+      console.log('');
+      updated = selectedClients.filter(cid => cid !== id);
+    } else {
+      updated = [...selectedClients, id];
+      console.log('selecionado');
+    }
+
+    setSelectedClients(updated);
+    localStorage.setItem("selectedClients", JSON.stringify(updated));
+  };
+
 
   useEffect(() => {
     async function fetchUsers() {
@@ -74,43 +97,18 @@ const Clients = () => {
     <section className="page-clients">
       <div className="container mx-auto mt-9 px-2">
         <div className="top-grid-clients flex justify-between mb-2">
-          <span className="font-normal text-lg"><strong className="font-bold">{clients?.clients.length ?? 0}</strong> clientes encontrados:</span>
-          <span className="font-normal text-lg">Clientes por página: {clientsPerPage}</span>
+          <span className="font-normal text-sm md:text-lg lg:text-lg"><strong className="font-bold">{clients?.clients.length ?? 0}</strong> clientes encontrados:</span>
+          <span className="font-normal text-sm md:text-lg lg:text-lg">Clientes por página: {clientsPerPage}</span>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {clients?.clients.map((u) => (
-            <div key={u.id} className="clients-card text-center mb-2 flex flex-col justify-center items-center  p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 w-full">
-              <h5 className="break-all text-base mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-                {u.name}
-                </h5>
-              <p className="font-normal text-sm text-black">
-                Salário: R${u.salary}
-              </p>
-              <p className="font-normal text-sm text-black mt-2">
-                Empresa: R${u.companyValuation}
-              </p>
-
-              <div className="box-create-edit-remove w-full flex justify-between gap-3 mt-5">
-                <button type='button' className='cursor-pointer'>
-                  <PlusIcon className="h-7 w-7 text-black" />
-                </button> 
-                <button 
-                  type='button' 
-                  className='cursor-pointer' 
-                  onClick={() => handleActions('edit', u.id)}
-                  >
-                  <PencilIcon className="h-6 w-6 text-black" />
-                </button>
-
-                <button 
-                  type='button' 
-                  className='cursor-pointer'
-                  onClick={() => handleActions('remove', u.id)}
-                  >
-                  <TrashIcon className="h-6 w-6 text-red-500" />
-                </button>
-              </div>
-            </div>
+            <ClientCard
+              key={u.id}
+              client={u}
+              isSelected={selectedClients.includes(u.id)}
+              onClick={() => toggleSelectClient(u.id)}
+              onAction={(action, id) => handleActions(action, id)}
+            />
           ))}
         </div>
 

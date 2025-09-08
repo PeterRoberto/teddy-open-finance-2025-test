@@ -3,6 +3,7 @@ import "../../assets/styles/components/header.scss";
 
 // Hooks
 import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 
 // Context
 import { useAuth } from "../../context/userContext";
@@ -14,113 +15,66 @@ import logo from "../../assets/img/logo-teddy.png";
 import {
   Dialog,
   DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Popover,
-  PopoverButton,
   PopoverGroup,
-  PopoverPanel,
 } from '@headlessui/react'
 import {
-  ArrowPathIcon,
   Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon, 
-  SquaresPlusIcon,
   XMarkIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+} from '@heroicons/react/24/outline';
+import {
+  HomeIcon,
+  UserIcon,
+  UserPlusIcon
+} from '@heroicons/react/24/solid'
 import { NavLink } from 'react-router-dom'
 
-const products = [
-  { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
-  { name: 'Engagement', description: 'Speak directly to your customers', href: '#', icon: CursorArrowRaysIcon },
-  { name: 'Security', description: 'Your customers’ data will be safe and secure', href: '#', icon: FingerPrintIcon },
-  { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
-  { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
-]
-const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact sales', href: '#', icon: PhoneIcon },
-]
+
 
 const Navbar = () => {
   const { name } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // Logout
+  const handleLogOut = () => {
+    localStorage.removeItem('name');
+    navigate("/");
+  }
 
   return (
     <header className="px-2 bg-white shadow-[0_2px_2px_rgba(0,0,0,0.25)]">
       <div className="container mx-auto py-4">
         <nav aria-label="Global" className="nav-header flex items-center justify-between">
-          <div className="flex lg:flex-1">
-              <NavLink to="/" className="-m-1.5 p-1.5 box-logo">
-                <img className='logo' src={logo} alt="Teddy Open Finance" title="Teddy Open Finance" />
-              </NavLink>
-          </div>
-          <div className="flex lg:hidden">
+          <div className="flex icon-menu-mobile">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}
               className="inline-flex items-center justify-center rounded-md text-gray-700"
             >
               <span className="sr-only">Open main menu</span>
-              <Bars3Icon aria-hidden="true" className="size-6" />
+              <Bars3Icon aria-hidden="true" className="size-8 cursor-pointer" />
             </button>
           </div>
+          <div className="flex lg:flex-1">
+              <NavLink to="/" className="box-logo">
+                <img className='logo' src={logo} alt="Teddy Open Finance" title="Teddy Open Finance" />
+              </NavLink>
+          </div>
+          
           <PopoverGroup className="hidden lg:flex lg:gap-x-12">
-              <NavLink to="/clientes" className="text-sm/6 font-semibold text-gray-900">
-                Clientes
-              </NavLink>
-              <NavLink to="/clientes-selecionados" className="text-sm/6 font-semibold text-gray-900">
-                Clientes Selecionados
-              </NavLink>
+            <NavLink to="/clientes" className="text-sm/6 font-semibold text-gray-900">
+              Clientes
+            </NavLink>
+            <NavLink to="/clientes-selecionados" className="text-sm/6 font-semibold text-gray-900">
+              Clientes Selecionados
+            </NavLink>
 
-              <Popover className="relative">
-              <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-                Sair
-                <ChevronDownIcon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-              </PopoverButton>
-
-              <PopoverPanel
-                transition
-                className="absolute top-full -left-8 z-50 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in"
+            <button 
+              className="cursor-pointer flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900"
+              onClick={handleLogOut}
               >
-                <div className="p-4">
-                  {products.map((item) => (
-                    <div
-                      key={item.name}
-                      className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm/6 hover:bg-gray-50"
-                    >
-                      <div className="flex size-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                        <item.icon aria-hidden="true" className="size-6 text-gray-600 group-hover:text-indigo-600" />
-                      </div>
-                      <div className="flex-auto">
-                        <a href={item.href} className="block font-semibold text-gray-900">
-                          {item.name}
-                          <span className="absolute inset-0" />
-                        </a>
-                        <p className="mt-1 text-gray-600">{item.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
-                  {callsToAction.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className="flex items-center justify-center gap-x-2.5 p-3 text-sm/6 font-semibold text-gray-900 hover:bg-gray-100"
-                    >
-                      <item.icon aria-hidden="true" className="size-5 flex-none text-gray-400" />
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </PopoverPanel>
-            </Popover>
-
+              Sair
+            </button>
           </PopoverGroup>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <h2>Olá, <strong>{name ?? "visitante"}</strong></h2>
@@ -128,67 +82,57 @@ const Navbar = () => {
         </nav>
       </div>
       
-      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="">
         <div className="fixed inset-0 z-50" />
-        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                alt=""
-                src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
-              />
-            </a>
+        <DialogPanel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 sm:py-10 sm:px-5">
+          <div className="top-area-menu-mobile flex items-center justify-between">
+            <NavLink to="/" className="box-logo">
+              <img className='logo' src={logo} alt="Teddy Open Finance" title="Teddy Open Finance" />
+            </NavLink>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(false)}
-              className="-m-2.5 rounded-md p-2.5 text-gray-700"
+              className="rounded-md p-2.5 text-gray-700"
             >
               <span className="sr-only">Close menu</span>
-              <XMarkIcon aria-hidden="true" className="size-6" />
+              <XMarkIcon aria-hidden="true" className="size-6 cursor-pointer" />
             </button>
           </div>
-          <div className="mt-6 flow-root">
-            <div className="-my-6 divide-y divide-gray-500/10">
+          <div className="mt-6 flow-root area-items-menu">
+            <div className="divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <NavLink to="/" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
-                    Home
+                
+                <NavLink to="/" className="link-item flex rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                  <HomeIcon className="size-6 text-black mr-4" />
+                  <span className="font-semibold text-lg">Home</span>
                 </NavLink>
-                <NavLink to="/about" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
-                    About
+                <NavLink to="/clientes" className="link-item flex rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                  <UserIcon className="size-6 text-black mr-4" />
+                  <span className="font-semibold text-lg">Clientes</span>
                 </NavLink>
+                <NavLink to="/clientes-selecionados" className="link-item flex rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
+                  <UserPlusIcon className="size-6 text-black mr-4" />
+                  <span className="font-semibold text-lg">Clientes Selecionados</span>
 
-                <Disclosure as="div" className="-mx-3">
-                  <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
-                    Product
-                    <ChevronDownIcon aria-hidden="true" className="size-5 flex-none group-data-open:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 space-y-2">
-                    {[...products, ...callsToAction].map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-2 pr-3 pl-6 text-sm/7 font-semibold text-gray-900 hover:bg-gray-50"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
-                  </DisclosurePanel>
-                </Disclosure>
-              </div>
-              <div className="py-6">
-                <NavLink to="/register" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
-                    Registrar <span aria-hidden="true">&rarr;</span>
-                </NavLink>
-                <NavLink to="/login" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
-                    Log in <span aria-hidden="true">&rarr;</span>
+                  
                 </NavLink>
               </div>
+  
             </div>
           </div>
+          <div className="py-6 visitor-area">
+            <div className="">
+              <h2 className="hello-visitor">Olá, <strong>{name ?? "visitante"}</strong></h2>
+            </div>
+            <button 
+              className="mobile-logout cursor-pointer flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900"
+              onClick={handleLogOut}
+              >
+              Sair
+            </button>
+          </div>
         </DialogPanel>
+                    
       </Dialog>
     </header>
   )
