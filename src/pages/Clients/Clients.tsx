@@ -21,8 +21,6 @@ import { getUsers } from "../../services/userService";
 
 
 
-
-
 const Clients = () => {
   const [clients, setClients] = useState<UsersResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -137,9 +135,6 @@ const Clients = () => {
       </div>
     </section>
 
-
-
-    
     </>
   )
 }

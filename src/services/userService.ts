@@ -35,6 +35,7 @@ export const createClient = async (newClient: Omit<User, "id">): Promise<User> =
 };
 
 
+// Get client by ID
 export async function getClientById(id: number): Promise<User> {
     const config = requestConfig("GET")
     const res = await fetch(`${api}/users/${id}`, config);
@@ -48,10 +49,39 @@ export async function getClientById(id: number): Promise<User> {
 
 
 
+// Update client
+export async function updateClient(id: number, client: Partial<User>): Promise<User> {
+  const config = requestConfig("PATCH", client);
+
+  const res = await fetch(`${api}/users/${id}`, config);
+
+  if (!res.ok) {
+    throw new Error("Erro ao atualizar cliente");
+  }
+
+  const data: User = await res.json();
+  return data;
+};
+
+
+
+// Remove client by ID
+export async function removeClientById(id: number): Promise<void> {
+  const config = requestConfig("DELETE");
+  const res = await fetch(`${api}/users/${id}`, config);
+
+  if (!res.ok) {
+    throw new Error("Erro ao remover usuário");
+  }
+}
+
+
 const userService = {
     getUsers,
     createClient,
-    getClientById
+    getClientById,
+    updateClient,
+    removeClientById
 };
 
 export default userService;

@@ -5,7 +5,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from "react";
 
 // Services
-import { createClient, getClientById } from '../../services/userService';
+import { createClient, getClientById, updateClient, removeClientById } from '../../services/userService';
 
 // Inface
 import type { ActionType } from '../../pages/Clients/Clients';
@@ -38,37 +38,49 @@ export default function Example({ open, setOpen, action, onClose, selectedId }: 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!name || salary <= 0 || companyValuation <= 0) {
-      setError("Preencha todos os campos corretamente.");
-      return;
+    // só valida os inputs se for create ou edit
+    if (action === "create" || action === "edit") {
+      if (!name || salary <= 0 || companyValuation <= 0) {
+        setError("Preencha todos os campos corretamente.");
+        return;
+      }
     }
 
     try {
-      const client = { name, salary, companyValuation };
-      await createClient(client);
+      if (action === "create") {
+        await createClient({ name, salary, companyValuation });
+        setMessage("Cliente criado com sucesso!");
 
-      setMessage("Cliente criado com sucesso");
+        // Resetar estados, mensagens e fechar modal
+        setTimeout(function() {
+          setMessage(null);
+          setName("");
+          setSalary(0);
+          setCompanyValuation(0);
+        }, 2000);
 
-      setTimeout(function() {
-        setMessage(null);
-        // setOpen(false);
-      }, 2000);
+      } else if (action === "edit" && selectedId) {
+        await updateClient(selectedId, { name, salary, companyValuation });
+        setMessage("Cliente atualizado com sucesso!");
 
-      setName("");
-      setSalary(0);
-      setCompanyValuation(0);
+        // Resetar estados, mensagens e fechar modal
+        setTimeout(function() {
+          setMessage(null);
+        }, 2000);
+      } else if (action === "remove" && selectedId) {
+        await removeClientById(selectedId);
+        setMessage("Cliente removido com sucesso!");
 
-    } catch (err) {
-      console.error("Erro ao criar cliente:", err);
-      if(err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Erro inesperado");
+        // Resetar estados, mensagens e fechar modal
+        setTimeout(function() {
+          setMessage(null);
+        }, 2000);
       }
 
-      setTimeout(function() {
-        setError(null);
-      }, 2000);
+      // onClose();
+    } catch (err) {
+      console.error(err);
+      alert("Ocorreu um erro. Verifique os dados e tente novamente.");
     }
   };
   
@@ -91,8 +103,8 @@ export default function Example({ open, setOpen, action, onClose, selectedId }: 
         }
       })();
     }
-
   }, [action, selectedId, open]);
+
 
   if (!open) return null;
 
@@ -143,63 +155,70 @@ export default function Example({ open, setOpen, action, onClose, selectedId }: 
                   
 
                   <form onSubmit={handleSubmit}>
-                    <div className="mt-2">
-                      <input
-                        id="first-name"
-                        name="name"
-                        type="text"
-                        autoComplete="given-name"
-                        placeholder="Digite o nome:"
-                        className="h-[40px] block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        value={name || ""}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                      />
-                    </div>
+                    {action !== "remove" && (
+                      <>
+                        <div className="mt-2">
+                          <input
+                            id="first-name"
+                            name="name"
+                            type="text"
+                            autoComplete="given-name"
+                            placeholder="Digite o nome:"
+                            className="h-[40px] block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            value={name || ""}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                          />
+                        </div>
 
-                    <div className="mt-2">
-                      <input
-                        id="first-name"
-                        name="salary"
-                        type="number"
-                        autoComplete="given-salary"
-                        placeholder="Digite o salário:"
-                        className="h-[40px] block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        value={salary || ""}
-                        onChange={(e) => setSalary(Number(e.target.value))}
-                        required
-                      />
-                    </div>
+                        <div className="mt-2">
+                          <input
+                            id="first-name"
+                            name="salary"
+                            type="number"
+                            autoComplete="given-salary"
+                            placeholder="Digite o salário:"
+                            className="h-[40px] block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            value={salary || ""}
+                            onChange={(e) => setSalary(Number(e.target.value))}
+                            required
+                          />
+                        </div>
 
-                    <div className="mt-2">
-                      <input
-                        id="valuation"
-                        name="valuation"
-                        type="number"
-                        autoComplete="given-valuation"
-                        placeholder="Digite o valor da empresa:"
-                        className="h-[40px] block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        value={companyValuation || ""}
-                        onChange={(e) => setCompanyValuation(Number(e.target.value))}
-                        required
-                      />
-                    </div>
+                        <div className="mt-2">
+                          <input
+                            id="valuation"
+                            name="valuation"
+                            type="number"
+                            autoComplete="given-valuation"
+                            placeholder="Digite o valor da empresa:"
+                            className="h-[40px] block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                            value={companyValuation || ""}
+                            onChange={(e) => setCompanyValuation(Number(e.target.value))}
+                            required
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    {action === "remove" && (
+                      <>
+                      <strong>Excluir cliente</strong>
+                      <p className="mb-4">
+                        Você está prestes a excluir o cliente:{" "}
+                        <span className="font-bold">{name || "Cliente"}</span>
+                      </p>
+                      </>
+                    )}
+
                     <div className="py-3">
                       <button
                         type="submit"
                         className="button-close-modal h-[40px] mb-3 flex w-full justify-center items-center rounded-md cursor-pointer  border-2 border-solid px-3 text-sm/6 font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
                       >
-                        {action === "create" && (
-                          <>
-                          Criar Cliente
-                          </>
-                        )}
-
-                        {action === "edit" && (
-                          <>
-                          Editar Cliente
-                          </>
-                        )}
+                        {action === "create" && "Criar Cliente"}
+                        {action === "edit" && "Editar Cliente"}
+                        {action === "remove" && "Excluir cliente"}
                       </button>
                     </div>
 
