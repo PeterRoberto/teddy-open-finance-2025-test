@@ -19,7 +19,6 @@ import type { User } from "../../types/user";
 import { getUsers } from "../../services/userService";
 
 
-
 const Clients = () => {
   const [clients, setClients] = useState<UsersResponse | null>(null);
   const [loading, setLoading] = useState(true);

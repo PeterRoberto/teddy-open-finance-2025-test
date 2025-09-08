@@ -66,10 +66,6 @@ export default function ClientCard({ client, isSelected, onClick, onAction }: Cl
           )}
         </div>
 
-
-        
-
-
         {/* Botões de ação, mas só mostra se recebeu `onAction` */}
         {location.pathname === '/clientes-selecionados' && (
             <>
