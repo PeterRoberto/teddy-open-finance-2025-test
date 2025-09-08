@@ -10,3 +10,16 @@
         color: white;
     }
 }
+
+
+// Type 2 (Botão de fechar modal)
+.button-close-modal {
+    background-color: variables.$bg-button-close-modal;
+    border-color: variables.$bg-button-close-modal;
+    transition: variables.$transition;  
+    &:hover {
+        background-color: transparent;
+        transition: variables.$transition; // transição suave
+        color: variables.$bg-button-close-modal;
+    }
+}
