@@ -34,6 +34,7 @@ npm run dev
 ```
 
 ### Rodar com Docker
-```bash
-docker build -t teste-cliente .
-docker run -p 3000:80 teste-cliente
+ ```bash
+docker build -t meu-app .
+docker run -p 3000:80 meu-app
+
