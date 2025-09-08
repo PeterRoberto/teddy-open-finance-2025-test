@@ -33,3 +33,7 @@ npm install
 npm run dev 
 ```
 
+### Rodar com Docker
+```bash
+docker build -t teste-cliente .
+docker run -p 3000:80 teste-cliente
