@@ -13,6 +13,7 @@ import ClientCard from '../../components/Clients/ClientCard';
 // Interfaces
 import type { UsersResponse } from "../../types/user";
 export type ActionType = "create" | "edit" | "remove";
+import type { User } from "../../types/user";
 
 // Services
 import { getUsers } from "../../services/userService";
@@ -26,6 +27,7 @@ const Clients = () => {
   const [isAction, setIsAction] = useState<ActionType>("create");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedClients, setSelectedClients] = useState<number[]>([]);
+  const [nameSelectedClient, setNameSelectedClient] = useState<User | null>(null);
   // const [currentPage, setCurrentPage] = useState(1);
   const [clientsPerPage] = useState(16);
 
@@ -75,8 +77,11 @@ const Clients = () => {
   const handleActions = (categ: ActionType, id: number) => {
     setIsAction(categ);
     setSelectedId(id);
-    setOpen(true);
-    console.log(`Ação de ${categ} do cliente com ID: ${id}`);
+    
+    
+    // acha o cliente correspondente
+    const client = clients?.clients.find((c) => c.id === id) || null;
+    setNameSelectedClient(client);
 
     setOpen(true);
   }
@@ -95,7 +100,7 @@ const Clients = () => {
     <>
     <Navbar />
     <section className="page-clients">
-      <div className="container mx-auto mt-9 px-2">
+      <div className="container mx-auto mt-9 px-2 lg:px-0">
         <div className="top-grid-clients flex justify-between mb-2">
           <span className="font-normal text-sm md:text-lg lg:text-lg"><strong className="font-bold">{clients?.clients.length ?? 0}</strong> clientes encontrados:</span>
           <span className="font-normal text-sm md:text-lg lg:text-lg">Clientes por página: {clientsPerPage}</span>
@@ -126,13 +131,14 @@ const Clients = () => {
           action={isAction} 
           onClose={handleClose} 
           selectedId={selectedId} 
+          nameSelectedClient={nameSelectedClient}
         />
 
+        {/* Paginação */}
         <Pagination />
 
       </div>
     </section>
-
     </>
   )
 }

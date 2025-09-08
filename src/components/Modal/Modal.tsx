@@ -7,8 +7,9 @@ import { useState, useEffect } from "react";
 // Services
 import { createClient, getClientById, updateClient, removeClientById } from '../../services/userService';
 
-// Inface
+// Interface
 import type { ActionType } from '../../pages/Clients/Clients';
+import type { User } from '../../types/user';
 
 
 import type { Dispatch, SetStateAction } from "react";
@@ -26,9 +27,12 @@ interface ModalProps {
   action: ActionType;
   selectedId?: number | null;
   onClose: () => void;
+  nameSelectedClient?: User | null;
 }
 
-export default function Example({ open, setOpen, action, onClose, selectedId }: ModalProps) {
+
+
+export default function Example({ open, setOpen, action, onClose, selectedId, nameSelectedClient }: ModalProps) {
   const [name, setName] = useState<string>("");
   const [salary, setSalary] = useState<number>(0);
   const [companyValuation, setCompanyValuation] = useState<number>(0);
@@ -207,7 +211,9 @@ export default function Example({ open, setOpen, action, onClose, selectedId }: 
                       <strong>Excluir cliente</strong>
                       <p className="mb-4">
                         Você está prestes a excluir o cliente:{" "}
-                        <span className="font-bold">{name || "Cliente"}</span>
+                        <span className="font-bold">
+                          {nameSelectedClient?.name || "Cliente"}
+                        </span>
                       </p>
                       </>
                     )}

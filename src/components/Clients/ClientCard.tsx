@@ -29,51 +29,45 @@ export default function ClientCard({ client, isSelected, onClick, onAction }: Cl
         <p className="font-normal text-sm text-black">Salário: R${client.salary}</p>
         <p className="font-normal text-sm text-black mt-2">Empresa: R${client.companyValuation}</p>
 
-        {/* <h5 className="break-all text-base mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
-        {u.name}
-        </h5>
-        <p className="font-normal text-sm text-black">
-        Salário: R${u.salary}
-        </p>
-        <p className="font-normal text-sm text-black mt-2">
-        Empresa: R${u.companyValuation}
-        </p> */}
 
-        {location.pathname === '/clientes' && (
+        {/* Sempre mostra o botão de Plus/Minus */}
+        <div className="w-full flex justify-between gap-3 mt-5">
+          <button 
+            type='button' 
+            className={`cursor-pointer  flex justify-end ${location.pathname === '/clientes-selecionados' ? 'w-full' : ''}`} 
+            onClick={onClick}
+          >
+            {isSelected ? 
+              <MinusIcon className="h-6 w-6 text-black" />
+            : 
+              <PlusIcon className="h-6 w-6 text-black" />
+            }
+          </button>
+
+          {/* Só mostra editar/excluir se estiver na rota /clientes */}
+          {location.pathname === '/clientes' && onAction && (
             <>
-            {onAction && (
-                <div className="box-create-edit-remove w-full flex justify-between gap-3 mt-5">
-                    <button 
-                        type='button' 
-                        className='cursor-pointer' 
-                        onClick={onClick}
-                        >
-                        {isSelected ? 
-                            <MinusIcon className="h-6 w-6 text-black" />
-                        : 
-                            <PlusIcon className="h-6 w-6 text-black" />
-                        }
-                    </button> 
-                    <button 
-                        type='button' 
-                        className='cursor-pointer' 
-                        onClick={() => onAction('edit', client.id)}
-                        >
-                        <PencilIcon className="h-6 w-6 text-black" />
-                    </button>
+              <button 
+                type='button' 
+                className='cursor-pointer' 
+                onClick={() => onAction('edit', client.id)}
+              >
+                <PencilIcon className="h-6 w-6 text-black" />
+              </button>
 
-                    <button 
-                        type='button' 
-                        className='cursor-pointer'
-                        onClick={() => onAction('remove', client.id)}
-                        >
-                        <TrashIcon className="h-6 w-6 text-red-500" />
-                    </button>
-                </div>
-            )}
+              <button 
+                type='button' 
+                className='cursor-pointer'
+                onClick={() => onAction('remove', client.id)}
+              >
+                <TrashIcon className="h-6 w-6 text-red-500" />
+              </button>
             </>
-            
-        )}
+          )}
+        </div>
+
+
+        
 
 
         {/* Botões de ação, mas só mostra se recebeu `onAction` */}
