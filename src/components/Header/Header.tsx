@@ -9,8 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/userContext";
 
 // Images
-import logo from "../../assets/img/logo-teddy.png";
-import logoBgDark from "../../assets/img/logo-teddy-bg-dark.png";
+import logo from "../../assets/img/logo-ilustrativa.png";
+import logoBgDark from "../../assets/img/logo-branca-ilustrativa.png";
 
 
 import {
@@ -61,7 +61,7 @@ const Navbar = () => {
           </div>
           <div className="flex lg:flex-1">
               <NavLink to="/" className="box-logo">
-                <img className='logo' src={logo} alt="Teddy Open Finance" title="Teddy Open Finance" />
+                <img className='logo' src={logo} alt="Logo" title="Logo" />
               </NavLink>
           </div>
           
@@ -94,14 +94,14 @@ const Navbar = () => {
               <img 
                 className='logo block sm:hidden' 
                 src={logoBgDark} 
-                alt="Teddy Open Finance" 
-                title="Teddy Open Finance" 
+                alt="Logo" 
+                title="Logo" 
               />
               <img 
-                className='logo hidden sm:block' 
+                className='logo-mobile-show hidden sm:block' 
                 src={logo} 
-                alt="Teddy Open Finance" 
-                title="Teddy Open Finance" 
+                alt="Logo" 
+                title="Logo" 
               />
             </NavLink>
             <button

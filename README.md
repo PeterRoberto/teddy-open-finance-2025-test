@@ -1,10 +1,3 @@
-# Teddy Open Finance 
-
-Teste para a empresa [Teddy Open Finance](https://teddydigital.io/).
-<br>
-<br>
-
-
 ## React + Node + Vite + TypeScript + TailwindCSS
 
 Para esse projeto utilizei:

@@ -95,33 +95,6 @@ export default function ClientCard({ client, isSelected, onClick, onAction }: Cl
         )}
 
 
-        
-
-
-
-      {/* Botões de ação, mas só mostra se recebeu `onAction` */}
-      {/* {onAction && (
-        <div className="flex gap-2 mt-4">
-          <button
-            className="px-3 py-1 rounded bg-blue-500 text-white text-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onAction("edit", client.id);
-            }}
-          >
-            Editar
-          </button>
-          <button
-            className="px-3 py-1 rounded bg-red-500 text-white text-sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onAction("remove", client.id);
-            }}
-          >
-            Excluir
-          </button>
-        </div>
-      )} */}
     </div>
   );
 }

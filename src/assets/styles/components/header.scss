@@ -8,6 +8,11 @@ header {
             position: absolute;
             left: -60px;
         }
+
+        .box-logo {
+            max-width: 150px;
+        }
+
         a, button {
             font-weight: 400;
             font-size: 16px;
@@ -48,6 +53,11 @@ header {
 
 // Mobile
 .menu-mobile-section {
+
+    .logo-mobile-show {
+        max-width: 125px;
+    }
+
     .area-items-menu  {
         .link-item {
             padding: 0 30px;

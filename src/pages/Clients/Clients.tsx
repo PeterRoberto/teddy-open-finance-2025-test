@@ -134,7 +134,7 @@ const Clients = () => {
         />
 
         {/* Paginação */}
-        <Pagination />
+        {/* <Pagination /> */}
 
       </div>
     </section>
